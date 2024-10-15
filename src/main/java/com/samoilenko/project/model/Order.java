@@ -1,2 +1,4 @@
-package com.samoilenko.project.model;public class Order {
+package com.samoilenko.project.model;
+
+public class Order {
 }
