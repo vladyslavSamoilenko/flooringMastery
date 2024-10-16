@@ -1,2 +1,5 @@
-package com.samoilenko.project.view;public interface View {
+package com.samoilenko.project.view;
+
+public interface View {
+    void displayDetails();
 }

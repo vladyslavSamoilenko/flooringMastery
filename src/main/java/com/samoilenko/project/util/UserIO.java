@@ -1,4 +1,4 @@
-package com.samoilenko.project;
+package com.samoilenko.project.util;
 
 public class UserIO {
     public void showDisplay(){

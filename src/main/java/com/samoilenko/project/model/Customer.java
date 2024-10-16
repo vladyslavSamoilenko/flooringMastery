@@ -1,9 +1,9 @@
 package com.samoilenko.project.model;
 
-public class User {
+public class Customer {
     private String name;
 
-    public User(String name) {
+    public Customer(String name) {
         this.name = name;
     }
 
