@@ -1,5 +1,5 @@
 package com.samoilenko.project.controller;
 
 public interface Controller {
-    void updateView();
+    void display();
 }

@@ -3,7 +3,7 @@ package com.samoilenko.project.model;
 import java.math.BigDecimal;
 
 public class Order {
-    int orderNumber;
+    int  orderNumber;
     String customerName;
     String state;
     BigDecimal taxRate;
@@ -34,6 +34,8 @@ public class Order {
         this.laborCost = laborCost;
         this.tax = tax;
         this.total = total;
+
+
     }
 
     public int getOrderNumber() {
@@ -132,5 +134,21 @@ public class Order {
         this.total = total;
     }
 
-
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderNumber=" + orderNumber +
+                ", customerName='" + customerName + '\'' +
+                ", state='" + state + '\'' +
+                ", taxRate=" + taxRate +
+                ", productType='" + productType + '\'' +
+                ", area=" + area +
+                ", costPerSquareFoot=" + costPerSquareFoot +
+                ", laborCostPerSquareFoot=" + laborCostPerSquareFoot +
+                ", materialCost=" + materialCost +
+                ", laborCost=" + laborCost +
+                ", tax=" + tax +
+                ", total=" + total +
+                '}';
+    }
 }
