@@ -25,13 +25,13 @@ public class App
 
         // Initialize Controllers
         ProductsController productsController = new ProductsController(new ProductManagementService(), productView, null);
-        OrderController orderController = new OrderController(null, orderDao);
+        OrderController orderController = new OrderController(null, orderDao, orderView);
 
         // Create Flooring Order Service (without orders yet)
         FlooringOrderService flooringService = new FlooringOrderService(null, null);
 
         // Initialize Main Controller
-        MainController mainController = new MainController(orderController, productsController, flooringService, orderDao);
+        MainController mainController = new MainController(orderController, productsController, flooringService, orderDao, orderView);
 
         // Start the application
         mainController.start();

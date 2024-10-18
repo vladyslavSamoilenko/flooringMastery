@@ -25,6 +25,7 @@ public class FlooringOrderService {
 
     public BigDecimal calculateTotalCost() {
         return getOrder().getMaterialCost().add(getOrder().getLaborCost()).add(getOrder().getTax());
+       // return getOrder().getMaterialCost().add(getOrder().getLaborCost()).add(getOrder().getTax());
     }
 
     public BigDecimal materialCost() {

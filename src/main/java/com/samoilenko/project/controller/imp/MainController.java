@@ -1,29 +1,31 @@
 package com.samoilenko.project.controller.imp;
 
-import com.samoilenko.project.controller.Controller;
 import com.samoilenko.project.dao.impl.OrderDaoImpl;
 import com.samoilenko.project.model.Order;
 import com.samoilenko.project.model.Product;
 import com.samoilenko.project.model.Tax;
 import com.samoilenko.project.service.impl.FlooringOrderService;
+import com.samoilenko.project.view.impl.OrderView;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainController implements Controller {
+public class MainController {
     private OrderController orderController;
     private ProductsController productsController;
     private FlooringOrderService service;
     private Order model;
     private OrderDaoImpl orderDao;
+    private OrderView orderView;
 
-    public MainController(OrderController orderController, ProductsController productsController, FlooringOrderService service, OrderDaoImpl orderDao) {
+    public MainController(OrderController orderController, ProductsController productsController, FlooringOrderService service, OrderDaoImpl orderDao, OrderView orderView) {
         this.orderController = orderController;
         this.productsController = productsController;
         this.service = service;
         this.orderDao = orderDao;
+        this.orderView = orderView;
     }
 
     public void start() {
@@ -61,10 +63,8 @@ public class MainController implements Controller {
 
     private void exportAllData() {
         List<Order> allOrders = orderDao.getAllOrders();
-        // Logic to export data, e.g., write to a file
-        for (Order order : allOrders) {
-            System.out.println(order); // Example output
-        }
+        orderView.displayDetails(allOrders);
+
     }
 
     public void displayOrders () {
@@ -83,11 +83,12 @@ public class MainController implements Controller {
         BigDecimal area = inputArea();
         BigDecimal laborCostPerSquareFoot = product.getLaborCostPerSquareRoot();
         BigDecimal costPerSquareFoot = product.getCostPerSquareFoot();
+        String date = LocalDate.now().toString();
 
 
         // Create the Order object
         model = new Order(orderNumber, customerName, state, taxRate, productType,
-                area, costPerSquareFoot, laborCostPerSquareFoot, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, orderDate());
+                area, costPerSquareFoot, laborCostPerSquareFoot, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, date);
 
         // Inject the created order into FlooringOrderService
         service = new FlooringOrderService(model, tax);
@@ -96,12 +97,13 @@ public class MainController implements Controller {
         BigDecimal materialCost = service.materialCost();
         BigDecimal laborCost = service.laborCost();
         BigDecimal mainTax = service.tax(tax);
-        BigDecimal total = service.calculateTotalCost();
 
         // Set calculated values in the order
         model.setMaterialCost(materialCost);
         model.setLaborCost(laborCost);
         model.setTax(mainTax);
+
+        BigDecimal total = service.calculateTotalCost();
         model.setTotal(total);
 
         // Add the order using the controller
@@ -151,7 +153,7 @@ public class MainController implements Controller {
 
     public Product chooseTheProduct(){
         System.out.println("Choose the product");
-        productsController.display();
+        productsController.displayProducts();
 
         System.out.println("enter the number of product");
         Scanner scanner = new Scanner(System.in);
@@ -174,28 +176,23 @@ public class MainController implements Controller {
             System.out.println("Input new customer name: ");
             Scanner scanner1 = new Scanner(System.in);
             String newName = scanner1.nextLine();
-            model.setCustomerName(newName);
+
         }else if(choose == 2){
             Tax newTax  = chooseTheState();
-            model.setState(newTax.getStateName());
-            model.setTaxRate(newTax.getTaxRate());
+
 
         }else if(choose == 3){
             Product newProduct = chooseTheProduct();
-            model.setProductType(newProduct.getProductType());
-            model.setCostPerSquareFoot(newProduct.getCostPerSquareFoot());
-            model.setLaborCostPerSquareFoot(newProduct.getLaborCostPerSquareRoot());
+
         }
         else if(choose == 4){
             Scanner scanner1 = new Scanner(System.in);
             double newArea = scanner1.nextInt();
-            model.setArea(new BigDecimal(newArea));
+
         }
         else{
             System.out.println("Incorrect choose");
         }
-
-        orderController.setOrder(model);
 
     }
 
@@ -229,8 +226,4 @@ public class MainController implements Controller {
         System.out.println("4. Area");
     }
 
-    @Override
-    public void display() {
-
-    }
 }

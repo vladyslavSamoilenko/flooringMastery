@@ -40,6 +40,7 @@ public class OrderDaoImpl implements OrderDao {
             ps.setDouble(10, order.getLaborCost().doubleValue());
             ps.setDouble(11, order.getTax().doubleValue());
             ps.setDouble(12, order.getTotal().doubleValue());
+            ps.setString(13, order.getOrderDate());
 
             ps.executeUpdate();  // Execute the insert query
             System.out.println("Order added successfully!");
@@ -51,7 +52,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void deleteOrder(int id) {
-        String query = "DELETE FROM Orders WHERE id = ?";
+        String query = "DELETE FROM Orders WHERE OrderNumber = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -79,19 +80,19 @@ public class OrderDaoImpl implements OrderDao {
              PreparedStatement ps = conn.prepareStatement(query)) {
 
             // Example: Update with new values (you can retrieve values from the user or from a specific order object)
-            ps.setString(2, order.getCustomerName());
-            ps.setString(3, order.getState());
-            ps.setBigDecimal(4, order.getTaxRate());
-            ps.setString(5, order.getProductType());
-            ps.setDouble(6, order.getTaxRate().doubleValue());
-            ps.setString(7, order.getProductType());
-            ps.setDouble(8, order.getArea().doubleValue());
-            ps.setDouble(9, order.getCostPerSquareFoot().doubleValue());
-            ps.setDouble(10, order.getLaborCostPerSquareFoot().doubleValue());
-            ps.setDouble(11, order.getMaterialCost().doubleValue());
-            ps.setDouble(12, order.getLaborCost().doubleValue());
-            ps.setDouble(13, order.getTax().doubleValue());
-            ps.setDouble(14, order.getTotal().doubleValue());
+            ps.setString(1, order.getCustomerName());
+            ps.setString(2, order.getState());
+            ps.setDouble(3, order.getTaxRate().doubleValue());
+            ps.setString(4, order.getProductType());
+            ps.setDouble(5, order.getTaxRate().doubleValue());
+            ps.setString(6, order.getProductType());
+            ps.setDouble(7, order.getArea().doubleValue());
+            ps.setDouble(8, order.getCostPerSquareFoot().doubleValue());
+            ps.setDouble(9, order.getLaborCostPerSquareFoot().doubleValue());
+            ps.setDouble(10, order.getMaterialCost().doubleValue());
+            ps.setDouble(11, order.getLaborCost().doubleValue());
+            ps.setDouble(12, order.getTax().doubleValue());
+            ps.setDouble(13, order.getTotal().doubleValue());
 
             int rowsAffected = ps.executeUpdate();  // Execute the update query
             if (rowsAffected > 0) {
@@ -114,7 +115,9 @@ public class OrderDaoImpl implements OrderDao {
              PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, date);
-            ResultSet rs = ps.executeQuery();  // Execute the select query
+            System.out.println("Executing query with date: " + date); // Логирование даты
+
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Order order = new Order(
@@ -132,14 +135,47 @@ public class OrderDaoImpl implements OrderDao {
                         rs.getBigDecimal("Total"),
                         rs.getString("OrderDate")
                 );
-                orders.add(order);  // Add the order to the list
+                orders.add(order);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        System.out.println("Number of orders retrieved: " + orders.size()); // Логирование результата
+
         return orders;
+    }
+    public Order getOrderByCustomerName(String customerName) {
+        String query = "SELECT * FROM Orders WHERE CustomerName = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, customerName);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Order(
+                        rs.getInt("OrderNumber"),
+                        rs.getString("CustomerName"),
+                        rs.getString("State"),
+                        rs.getBigDecimal("TaxRate"),
+                        rs.getString("ProductType"),
+                        rs.getBigDecimal("Area"),
+                        rs.getBigDecimal("CostPerSquareFoot"),
+                        rs.getBigDecimal("LaborCostPerSquareFoot"),
+                        rs.getBigDecimal("MaterialCost"),
+                        rs.getBigDecimal("LaborCost"),
+                        rs.getBigDecimal("Tax"),
+                        rs.getBigDecimal("Total"),
+                        rs.getString("OrderDate")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Если заказ не найден
     }
 
     @Override

@@ -15,6 +15,7 @@ public class Order {
     BigDecimal laborCost;
     BigDecimal tax;
     BigDecimal total;
+    String orderDate;
 
     public Order(int orderNumber, String customerName, String state,
                  BigDecimal taxRate, String productType, BigDecimal area,
@@ -34,8 +35,16 @@ public class Order {
         this.laborCost = laborCost;
         this.tax = tax;
         this.total = total;
+        this.orderDate = OrderDate;
 
+    }
 
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public int getOrderNumber() {

@@ -1,11 +1,10 @@
 package com.samoilenko.project.controller.imp;
 
-import com.samoilenko.project.controller.Controller;
 import com.samoilenko.project.model.Product;
 import com.samoilenko.project.service.impl.ProductManagementService;
 import com.samoilenko.project.view.impl.ProductView;
 
-public class ProductsController implements Controller {
+public class ProductsController{
     private Product model;
     private ProductView view ;
     private ProductManagementService service;
@@ -20,8 +19,7 @@ public class ProductsController implements Controller {
         return service.getProductById(id);
     }
 
-    @Override
-    public void display() {
+    public void displayProducts() {
         view.displayListOfProducts(service.getProducts());
     }
 }
