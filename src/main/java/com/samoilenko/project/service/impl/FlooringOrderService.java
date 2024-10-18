@@ -10,8 +10,8 @@ public class FlooringOrderService {
     private Order order;
     private Tax tax;
 
-    public FlooringOrderService(Order model, Tax tax) {
-        this.order = model;
+    public FlooringOrderService(Order order, Tax tax) {
+        this.order = order; // Assign the passed order
         this.tax = tax;
     }
 
@@ -27,15 +27,15 @@ public class FlooringOrderService {
         return getOrder().getMaterialCost().add(getOrder().getLaborCost()).add(getOrder().getTax());
     }
 
-    public BigDecimal materialCost(){
+    public BigDecimal materialCost() {
         return getOrder().getArea().multiply(getOrder().getCostPerSquareFoot());
     }
 
-    public BigDecimal laborCost(){
+    public BigDecimal laborCost() {
         return getOrder().getArea().multiply(getOrder().getLaborCostPerSquareFoot());
     }
 
-    public BigDecimal tax(Tax tax){
+    public BigDecimal tax(Tax tax) {
         return (materialCost().add(laborCost())).multiply(tax.getTaxRate().divide(new BigDecimal(100)));
     }
 }

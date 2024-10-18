@@ -12,15 +12,28 @@ import com.samoilenko.project.view.impl.OrderView;
 import com.samoilenko.project.view.impl.ProductView;
 
 import java.math.BigDecimal;
-
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
     {
+        OrderDaoImpl orderDao = new OrderDaoImpl();
+        ProductView productView = new ProductView();
+        OrderView orderView = new OrderView();
 
+        // Initialize product list
+        ProductManagementService.ProductList();
+
+        // Initialize Controllers
+        ProductsController productsController = new ProductsController(new ProductManagementService(), productView, null);
+        OrderController orderController = new OrderController(null, orderDao);
+
+        // Create Flooring Order Service (without orders yet)
+        FlooringOrderService flooringService = new FlooringOrderService(null, null);
+
+        // Initialize Main Controller
+        MainController mainController = new MainController(orderController, productsController, flooringService, orderDao);
+
+        // Start the application
+        mainController.start();
     }
 }

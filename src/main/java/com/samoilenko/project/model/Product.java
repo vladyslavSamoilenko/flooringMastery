@@ -36,4 +36,13 @@ public class Product {
     public void setLaborCostPerSquareRoot(BigDecimal laborCostPerSquareRoot) {
         this.laborCostPerSquareRoot = laborCostPerSquareRoot;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productType='" + productType + '\'' +
+                ", costPerSquareFoot=" + costPerSquareFoot +
+                ", laborCostPerSquareRoot=" + laborCostPerSquareRoot +
+                '}';
+    }
 }

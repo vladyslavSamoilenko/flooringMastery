@@ -9,6 +9,7 @@ import com.samoilenko.project.service.impl.FlooringOrderService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainController implements Controller {
@@ -46,7 +47,7 @@ public class MainController implements Controller {
                 removeAnOrder();
             }
             else if (choise == 5) {
-                //exportAllData();
+                exportAllData();
             }
             else if (choise == 6) {
                 quit();
@@ -56,6 +57,14 @@ public class MainController implements Controller {
             }
         }
 
+    }
+
+    private void exportAllData() {
+        List<Order> allOrders = orderDao.getAllOrders();
+        // Logic to export data, e.g., write to a file
+        for (Order order : allOrders) {
+            System.out.println(order); // Example output
+        }
     }
 
     public void displayOrders () {
@@ -74,13 +83,27 @@ public class MainController implements Controller {
         BigDecimal area = inputArea();
         BigDecimal laborCostPerSquareFoot = product.getLaborCostPerSquareRoot();
         BigDecimal costPerSquareFoot = product.getCostPerSquareFoot();
+
+        // Create the Order object
+        model = new Order(orderNumber, customerName, state, taxRate, productType,
+                area, costPerSquareFoot, laborCostPerSquareFoot, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        // Inject the created order into FlooringOrderService
+        service = new FlooringOrderService(model, tax);
+
+        // Now you can calculate the costs using the service
         BigDecimal materialCost = service.materialCost();
         BigDecimal laborCost = service.laborCost();
         BigDecimal mainTax = service.tax(tax);
         BigDecimal total = service.calculateTotalCost();
 
-        model = new Order(orderNumber, customerName, state, taxRate, productType,
-                    area,costPerSquareFoot,laborCostPerSquareFoot, materialCost, laborCost, mainTax, total);
+        // Set calculated values in the order
+        model.setMaterialCost(materialCost);
+        model.setLaborCost(laborCost);
+        model.setTax(mainTax);
+        model.setTotal(total);
+
+        // Add the order using the controller
         orderController.addOrder(model);
     }
 
@@ -138,8 +161,8 @@ public class MainController implements Controller {
     public BigDecimal inputArea(){
         System.out.println("Input the area: ");
         Scanner scanner = new Scanner(System.in);
-        double area = scanner.nextInt();
-        return BigDecimal.valueOf(area);
+        double area = scanner.nextDouble();
+        return new BigDecimal(area);
     }
 
     public void editAnOrder() {
@@ -176,7 +199,10 @@ public class MainController implements Controller {
     }
 
     public void removeAnOrder() {
-
+        System.out.print("Enter the order number to remove: ");
+        Scanner scanner = new Scanner(System.in);
+        int orderNumber = scanner.nextInt();
+        orderController.deleteOrderById(orderNumber);
     }
 
     public void quit () {
