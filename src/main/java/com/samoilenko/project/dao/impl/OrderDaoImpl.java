@@ -2,6 +2,7 @@ package com.samoilenko.project.dao.impl;
 
 import com.samoilenko.project.dao.OrderDao;
 import com.samoilenko.project.model.Order;
+import java.sql.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class OrderDaoImpl implements OrderDao {
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USER = "root" ;
     private static final String PASSWORD = "root";
+
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
@@ -30,13 +32,15 @@ public class OrderDaoImpl implements OrderDao {
             ps.setString(3, order.getState());
             ps.setBigDecimal(4, order.getTaxRate());
             ps.setString(5, order.getProductType());
-            ps.setBigDecimal(6, order.getArea());
-            ps.setBigDecimal(7, order.getCostPerSquareFoot());
-            ps.setBigDecimal(8, order.getLaborCostPerSquareFoot());
-            ps.setBigDecimal(9, order.getMaterialCost());
-            ps.setBigDecimal(10, order.getLaborCost());
-            ps.setBigDecimal(11, order.getTax());
-            ps.setBigDecimal(12, order.getTotal());
+            ps.setDouble(4, order.getTaxRate().doubleValue());
+            ps.setString(5, order.getProductType());
+            ps.setDouble(6, order.getArea().doubleValue());
+            ps.setDouble(7, order.getCostPerSquareFoot().doubleValue());
+            ps.setDouble(8, order.getLaborCostPerSquareFoot().doubleValue());
+            ps.setDouble(9, order.getMaterialCost().doubleValue());
+            ps.setDouble(10, order.getLaborCost().doubleValue());
+            ps.setDouble(11, order.getTax().doubleValue());
+            ps.setDouble(12, order.getTotal().doubleValue());
 
             ps.executeUpdate();  // Execute the insert query
             System.out.println("Order added successfully!");
@@ -80,13 +84,15 @@ public class OrderDaoImpl implements OrderDao {
             ps.setString(2, order.getState());
             ps.setBigDecimal(3, order.getTaxRate());
             ps.setString(4, order.getProductType());
-            ps.setBigDecimal(5, order.getArea());
-            ps.setBigDecimal(6, order.getCostPerSquareFoot());
-            ps.setBigDecimal(7, order.getLaborCostPerSquareFoot());
-            ps.setBigDecimal(8, order.getMaterialCost());
-            ps.setBigDecimal(9, order.getLaborCost());
-            ps.setBigDecimal(10, order.getTax());
-            ps.setBigDecimal(11, order.getTotal());
+            ps.setDouble(4, order.getTaxRate().doubleValue());
+            ps.setString(5, order.getProductType());
+            ps.setDouble(6, order.getArea().doubleValue());
+            ps.setDouble(7, order.getCostPerSquareFoot().doubleValue());
+            ps.setDouble(8, order.getLaborCostPerSquareFoot().doubleValue());
+            ps.setDouble(9, order.getMaterialCost().doubleValue());
+            ps.setDouble(10, order.getLaborCost().doubleValue());
+            ps.setDouble(11, order.getTax().doubleValue());
+            ps.setDouble(12, order.getTotal().doubleValue());
             ps.setInt(12, id);
 
             int rowsAffected = ps.executeUpdate();  // Execute the update query
