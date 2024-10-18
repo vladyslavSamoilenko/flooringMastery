@@ -20,7 +20,7 @@ public class Order {
                  BigDecimal taxRate, String productType, BigDecimal area,
                  BigDecimal laborCostPerSquareFoot, BigDecimal costPerSquareFoot,
                  BigDecimal materialCost, BigDecimal laborCost, BigDecimal tax,
-                 BigDecimal total)
+                 BigDecimal total, String OrderDate)
     {
         this.orderNumber = orderNumber;
         this.customerName = customerName;

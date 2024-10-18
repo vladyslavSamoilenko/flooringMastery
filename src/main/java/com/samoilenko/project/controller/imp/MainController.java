@@ -84,9 +84,10 @@ public class MainController implements Controller {
         BigDecimal laborCostPerSquareFoot = product.getLaborCostPerSquareRoot();
         BigDecimal costPerSquareFoot = product.getCostPerSquareFoot();
 
+
         // Create the Order object
         model = new Order(orderNumber, customerName, state, taxRate, productType,
-                area, costPerSquareFoot, laborCostPerSquareFoot, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+                area, costPerSquareFoot, laborCostPerSquareFoot, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, orderDate());
 
         // Inject the created order into FlooringOrderService
         service = new FlooringOrderService(model, tax);
